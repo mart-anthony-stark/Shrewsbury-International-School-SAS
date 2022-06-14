@@ -8,7 +8,7 @@ const init = async (app: Application) => {
     console.log(`Server running on port ${PORT}`);
   });
 
-  await mongoose.connect(`${process.env.DB_URI}`, {
+  await mongoose.connect(`${process.env.DB_URL}`, {
     keepAlive: true,
   });
   console.log("Connected to database");
