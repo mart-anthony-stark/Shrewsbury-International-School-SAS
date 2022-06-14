@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import User from "../models/User.model";
+import User from "../models/Admin.model";
 import { createToken } from "../utils/token";
 const bcrypt = require("bcryptjs");
 
@@ -13,19 +13,30 @@ export default {
       user.password = await bcrypt.hash(req.body.password, salt);
 
       await user.save();
-      const token = createToken(user);
+      const accessToken = createToken(user, `${process.env.ACCESS_SECRET}`,"30m");
+      const refreshToken = createToken(
+        user._id,
+        `${process.env.REFRESH_SECRET}`,
+        '7d'
+      );
       user._doc.password = undefined;
-      res.status(200).send({ success: true, user: user._doc, token });
-    } catch (error) {
-      res.status(500).send(error);
+      res.status(200).send({
+        user: user._doc,
+        accessToken,
+        refreshToken,
+      });
+    } catch (error: any) {
+      let err = error.message;
+      if (error.code === 11000) {
+        err = "Email must be unique";
+      }
+      res.status(500).send(err);
     }
   },
   login: async (req: Request, res: Response) => {
     const { email, password } = req.body;
     try {
-      const user = await User.findOne({
-        $or: [{ username: email }, { email }],
-      });
+      const user = await User.findOne({ email });
       if (!user)
         return res
           .status(404)
@@ -33,13 +44,18 @@ export default {
 
       const validPassword = await bcrypt.compare(password, user.password);
       if (!validPassword)
-        return res
-          .status(401)
-          .send({ success: false, msg: "Incorrect password" });
+        return res.status(401).send({ msg: "Incorrect password" });
 
-      const token = createToken(user);
+      const accessToken = createToken(user, `${process.env.ACCESS_SECRET}`,'30m');
+      const refreshToken = createToken(
+        user._id,
+        `${process.env.REFRESH_SECRET}`,
+        '7d'
+      );
       user._doc.password = undefined;
-      res.status(200).send({ success: true, user: user._doc, token });
+      res
+        .status(200)
+        .send({ success: true, user: user._doc, accessToken, refreshToken });
     } catch (error) {
       res.status(500).send(error);
     }
