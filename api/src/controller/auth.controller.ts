@@ -30,7 +30,7 @@ export default {
       if (error.code === 11000) {
         err = "Email must be unique";
       }
-      res.status(500).send(err);
+      res.status(500).send({err});
     }
   },
   login: async (req: Request, res: Response) => {
