@@ -12,5 +12,7 @@ app.use(express.json());
 
 app.use("/auth", authRouter);
 app.use("/student", studentRouter);
+import timeRouter from "./routes/time.route";
+app.use("/time", timeRouter);
 
 init(app);
