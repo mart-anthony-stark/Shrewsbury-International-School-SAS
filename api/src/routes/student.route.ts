@@ -1,11 +1,12 @@
 import { Router } from "express";
+import { catcher } from "../utils/catcher";
 const studentController = require("../controllers/student.controller");
 const router = Router();
 
-router.get("/", studentController.getAll);
-router.get("/:id", studentController.getOne);
-router.post("/", studentController.createOne);
-router.put("/:id", studentController.updateOne);
-router.delete("/:id", studentController.deleteOne);
+router.get("/", catcher(studentController.getAll));
+router.get("/:id", catcher(studentController.getOne));
+router.post("/", catcher(studentController.createOne));
+router.put("/:id", catcher(studentController.updateOne));
+router.delete("/:id", catcher(studentController.deleteOne));
 
 export default router;
