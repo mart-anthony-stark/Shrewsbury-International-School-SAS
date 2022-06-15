@@ -1,8 +1,15 @@
 <script setup>
+import Dropdown from "./AccountsDropdown.vue";
 </script>
 
 <template>
-    <nav class="header">
+  <nav class="header">
+    <div class="flex gap-4">
+      <router-link to="/">
+        <button class="active">Home</button>
+      </router-link>
 
-    </nav>
+      <dropdown />
+    </div>
+  </nav>
 </template>
