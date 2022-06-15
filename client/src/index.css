@@ -1,4 +1,11 @@
-/* ./src/index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.center {
+  @apply flex justify-center items-center;
+}
+
+.header {
+  @apply bg-blue-600 p-4;
+}

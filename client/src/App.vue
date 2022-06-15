@@ -1,11 +1,22 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
+import { onMounted, onUnmounted } from "@vue/runtime-core";
+
+// let counter;
+// onMounted(() => {
+//   counter = setInterval(() => {
+//     console.log("count");
+//   }, 1000);
+// });
+
+// onUnmounted(() => {
+//   clearInterval(counter);
+// });
 </script>
 
 <template>
+  <div class="center p-2 pt-0">
     <router-view />
+  </div>
 </template>
 
 <style>
