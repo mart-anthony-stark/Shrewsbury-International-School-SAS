@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const catcher_1 = require("../utils/catcher");
+const studentController = require("../controllers/student.controller");
+const router = (0, express_1.Router)();
+router.get("/", (0, catcher_1.catcher)(studentController.getAll));
+router.get("/:id", (0, catcher_1.catcher)(studentController.getOne));
+router.post("/", (0, catcher_1.catcher)(studentController.createOne));
+router.put("/:id", (0, catcher_1.catcher)(studentController.updateOne));
+router.delete("/:id", (0, catcher_1.catcher)(studentController.deleteOne));
+exports.default = router;

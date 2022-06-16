@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const catcher_1 = require("../utils/catcher");
+const timeController = require("../controllers/time.controller");
+const router = (0, express_1.Router)();
+router.get("/", (0, catcher_1.catcher)(timeController.getAll));
+router.get("/:id", (0, catcher_1.catcher)(timeController.getOne));
+router.post("/", (0, catcher_1.catcher)(timeController.createOne));
+router.put("/:id", (0, catcher_1.catcher)(timeController.updateOne));
+router.delete("/:id", (0, catcher_1.catcher)(timeController.deleteOne));
+exports.default = router;
