@@ -1,11 +1,12 @@
 <script setup>
 import { ref } from "vue";
 import { createToast } from "mosha-vue-toastify";
+import LoadingSpinner from "../components/Loader.vue";
 
 const emailRef = ref(null);
 const passwordRef = ref(null);
-const isLoading = ref(false);
 const apiBase = import.meta.env.VITE_API_URL;
+const isLoading = ref(false);
 
 const login = async () => {
   const email = emailRef.value.value;
@@ -17,6 +18,7 @@ const login = async () => {
   const body = JSON.stringify({ email, password });
 
   try {
+    isLoading.value = true;
     const res = await fetch(`${apiBase}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -25,17 +27,23 @@ const login = async () => {
 
     const data = await res.json();
     if (!res.ok) {
+      isLoading.value = false;
       createToast(data["msg"], { type: "danger" });
       return;
     }
+
+    createToast("Successfully logged in!", { type: "success" });
+    isLoading.value = false;
   } catch (error) {
     createToast("Something went wrong", { type: "danger" });
+    isLoading.value = false;
   }
 };
 </script>
 
 <template>
   <div class="center h-screen bg-blue-400">
+    <loading-spinner v-if="isLoading" />
     <div class="w-full max-w-xs">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <img src="../assets/cnsc.png" alt="" />
