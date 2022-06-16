@@ -41,11 +41,11 @@ const navigate = (link) => {
 i {
   @apply text-blue-500 items-center;
 }
-.dropdown.active i {
+.dropdown.active button i {
   @apply text-white;
 }
 .dropdown-content {
-  @apply hidden absolute bg-gray-100;
+  @apply hidden absolute bg-gray-100 text-black;
   min-width: 130px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;

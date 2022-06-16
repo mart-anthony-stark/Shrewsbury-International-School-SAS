@@ -16,10 +16,12 @@ watch(
   <nav class="header">
     <div class="flex gap-4">
       <router-link to="/">
-        <button class="active">Home</button>
+        <button :class="{ active: route.name === 'Home' }">Home</button>
       </router-link>
 
-      <accounts-dropdown :isActive="true" />
+      <accounts-dropdown
+        :isActive="route.name == 'Students' || route.name == 'Admins'"
+      />
     </div>
   </nav>
 </template>
