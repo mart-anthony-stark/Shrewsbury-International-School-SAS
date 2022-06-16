@@ -6,7 +6,6 @@ const props = defineProps(["isActive"]);
 const isDropdownVisible = ref(false);
 
 const router = useRouter();
-console.log(props.isActive);
 const navigate = (link) => {
   router.push(link);
 };
