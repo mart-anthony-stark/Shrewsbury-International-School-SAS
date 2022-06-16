@@ -13,3 +13,10 @@
 - POST     = /time
 - PUT      = /time/:id
 - DELETE   = /time/:id
+  
+## admin routes
+- GET      = /admin
+- GET      = /admin/:id
+- POST     = /admin
+- PUT      = /admin/:id
+- DELETE   = /admin/:id
