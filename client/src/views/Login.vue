@@ -2,11 +2,13 @@
 import { ref } from "vue";
 import { createToast } from "mosha-vue-toastify";
 import LoadingSpinner from "../components/Loader.vue";
+import { useRouter } from "vue-router";
 
 const emailRef = ref(null);
 const passwordRef = ref(null);
 const apiBase = import.meta.env.VITE_API_URL;
 const isLoading = ref(false);
+const router = useRouter();
 
 const login = async () => {
   const email = emailRef.value.value;
@@ -34,6 +36,8 @@ const login = async () => {
 
     createToast("Successfully logged in!", { type: "success" });
     isLoading.value = false;
+    localStorage.setItem("refresh-token", data["refreshToken"]);
+    router.push("/");
   } catch (error) {
     createToast("Something went wrong", { type: "danger" });
     isLoading.value = false;
