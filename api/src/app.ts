@@ -16,3 +16,6 @@ import timeRouter from "./routes/time.route";
 app.use("/time", timeRouter);
 
 init(app);
+
+    import adminRouter from "./routes/admin.route";
+    app.use("/admin", adminRouter);
