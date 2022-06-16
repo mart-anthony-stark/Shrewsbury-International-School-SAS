@@ -1,5 +1,7 @@
 <script setup>
-import Header from "../components/Header.vue";
+import { defineAsyncComponent } from "@vue/runtime-core";
+
+const Header = defineAsyncComponent(() => import("../components/Header.vue"));
 </script>
 
 <template>
