@@ -1,15 +1,8 @@
 <script setup>
-import { watch } from "@vue/runtime-core";
 import { useRoute } from "vue-router";
 import AccountsDropdown from "./AccountsDropdown.vue";
 
 const route = useRoute();
-watch(
-  () => route.path,
-  () => {
-    console.log(route.path);
-  }
-);
 </script>
 
 <template>
