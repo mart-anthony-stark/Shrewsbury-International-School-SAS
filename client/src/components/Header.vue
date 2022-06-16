@@ -1,5 +1,15 @@
 <script setup>
-import Dropdown from "./AccountsDropdown.vue";
+import { watch } from "@vue/runtime-core";
+import { useRoute } from "vue-router";
+import AccountsDropdown from "./AccountsDropdown.vue";
+
+const route = useRoute();
+watch(
+  () => route.path,
+  () => {
+    console.log(route.path);
+  }
+);
 </script>
 
 <template>
@@ -9,7 +19,7 @@ import Dropdown from "./AccountsDropdown.vue";
         <button class="active">Home</button>
       </router-link>
 
-      <dropdown />
+      <accounts-dropdown :isActive="true" />
     </div>
   </nav>
 </template>
