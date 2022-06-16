@@ -1,10 +1,12 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+
+const props = defineProps(["isActive"]);
 const isDropdownVisible = ref(false);
 
 const router = useRouter();
-
+console.log(props.isActive);
 const navigate = (link) => {
   router.push(link);
 };
@@ -14,7 +16,7 @@ const navigate = (link) => {
 <template>
   <div
     class="dropdown"
-    :class="{ open: isDropdownVisible }"
+    :class="{ open: isDropdownVisible, active: isActive }"
     @click="isDropdownVisible = !isDropdownVisible"
   >
     <button>
@@ -39,6 +41,9 @@ const navigate = (link) => {
 i {
   @apply text-blue-500 items-center;
 }
+.dropdown.active i {
+  @apply text-white;
+}
 .dropdown-content {
   @apply hidden absolute bg-gray-100;
   min-width: 130px;
@@ -49,7 +54,6 @@ i {
 .dropdown.open .dropdown-content {
   @apply block;
 }
-
 .option {
   @apply cursor-pointer flex justify-between;
   padding: 12px 16px;
