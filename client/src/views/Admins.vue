@@ -1,15 +1,30 @@
 <script setup>
-import { defineAsyncComponent } from "@vue/runtime-core";
+import { defineAsyncComponent, ref } from "@vue/runtime-core";
 
 const Header = defineAsyncComponent(() => import("../components/Header.vue"));
+const AddModal = defineAsyncComponent(() =>
+  import("../components/AddAdminModal.vue")
+);
+
+const isAddmodalActive = ref(false);
 </script>
 
 <template>
   <div>
+    <transition name="fade">
+      <add-modal
+        @closeModal="isAddmodalActive = false"
+        v-if="isAddmodalActive"
+      />
+    </transition>
+
     <Header />
     <main class="mx-2 sm:mx-6 md:mx-12">
-      <h1 class="text-center text-3xl font-bold text-blue-500 my-4">Admins</h1>
-      <button class="bg-green-500 text-white p-2 rounded hover:bg-green-600">
+      <h1 class="text-center text-3xl font-bold text-red-700 my-4">Admins</h1>
+      <button
+        @click="isAddmodalActive = true"
+        class="bg-green-500 text-white p-2 rounded hover:bg-green-600"
+      >
         <i class="fa fa-plus" aria-hidden="true"></i> Add New Admin
       </button>
       <div class="center hidden">
