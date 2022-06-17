@@ -8,9 +8,7 @@ const Header = defineAsyncComponent(() => import("../components/Header.vue"));
   <div>
     <Header />
     <main class="mx-2 sm:mx-6 md:mx-12">
-      <h1 class="text-center text-3xl font-bold text-blue-500 my-4">
-        Students
-      </h1>
+      <h1 class="text-center text-3xl font-bold text-red-700 my-4">Students</h1>
       <button class="bg-green-500 text-white p-2 rounded hover:bg-green-600">
         <i class="fa fa-plus" aria-hidden="true"></i> Add New Student
       </button>
