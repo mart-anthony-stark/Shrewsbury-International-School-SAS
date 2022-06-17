@@ -7,7 +7,14 @@ const route = useRoute();
 
 <template>
   <nav class="header">
-    <div class="flex gap-4">
+    <div class="flex gap-4 items-center">
+      <img
+        id="cnsc-logo"
+        class="w-14 h-14"
+        src="../assets/cnsc.png"
+        alt="CNSC"
+      />
+
       <router-link to="/">
         <button :class="{ active: route.name === 'Home' }">Home</button>
       </router-link>
@@ -18,3 +25,6 @@ const route = useRoute();
     </div>
   </nav>
 </template>
+
+<style scoped>
+</style>
