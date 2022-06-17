@@ -5,6 +5,7 @@ const store = createStore({
     return {
       accessToken: "",
       isAuth: false,
+      user: {},
     };
   },
   mutations: {
@@ -18,6 +19,9 @@ const store = createStore({
     logout(state) {
       state.isAuth = false;
       state.accessToken = "";
+    },
+    setUser(state, user) {
+      state.user = user;
     },
   },
   actions: {},
