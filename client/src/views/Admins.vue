@@ -1,20 +1,56 @@
 <script setup>
-import { defineAsyncComponent, ref } from "@vue/runtime-core";
+import { defineAsyncComponent, onBeforeMount, ref } from "@vue/runtime-core";
 
 const Header = defineAsyncComponent(() => import("../components/Header.vue"));
 const AddModal = defineAsyncComponent(() =>
   import("../components/AddAdminModal.vue")
 );
+const DeleteModal = defineAsyncComponent(() =>
+  import("../components/DeleteModal.vue")
+);
 
 const isAddmodalActive = ref(false);
+const isDelModalActive = ref(false);
+const currentDeleteID = ref("");
+const admins = ref([]);
+
+const fetchAdmins = async () => {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/admin`);
+  const data = await res.json();
+  admins.value = data;
+};
+
+const closeModal = () => {
+  fetchAdmins();
+  isAddmodalActive.value = false;
+};
+
+const initDelete = (id) => {
+  currentDeleteID.value = id;
+  isDelModalActive.value = true;
+};
+const deleteRecord = async () => {
+  console.log(currentDeleteID.value);
+};
+const cancelDelete = () => {
+  currentDeleteID.value = null;
+  isDelModalActive.value = false;
+};
+
+onBeforeMount(() => fetchAdmins());
 </script>
 
 <template>
   <div>
     <transition name="fade">
-      <add-modal
-        @closeModal="isAddmodalActive = false"
-        v-if="isAddmodalActive"
+      <add-modal @closeModal="closeModal()" v-if="isAddmodalActive" />
+    </transition>
+    <transition name="fade">
+      <delete-modal
+        @cancel="cancelDelete()"
+        @confirm="deleteRecord()"
+        name="admin"
+        v-if="isDelModalActive"
       />
     </transition>
 
@@ -36,15 +72,15 @@ const isAddmodalActive = ref(false);
             <th>Action</th>
           </thead>
           <tbody>
-            <tr>
-              <td>Mart Anthony</td>
-              <td>Salazar</td>
-              <td>mart@gmail.com</td>
+            <tr v-for="admin in admins" :key="admin._id">
+              <td>{{ admin["firstname"] }}</td>
+              <td>{{ admin["lastname"] }}</td>
+              <td>{{ admin["email"] }}</td>
               <td class="grid grid-cols-2 gap-2">
                 <button class="edit-btn">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
                 </button>
-                <button class="del-btn">
+                <button @click="initDelete(admin._id)" class="del-btn">
                   <i class="fa fa-trash" aria-hidden="true"></i> Delete
                 </button>
               </td>
