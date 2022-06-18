@@ -11,6 +11,8 @@ app.use(cors({ origin: "*" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+import adminRouter from "./routes/admin.route";
+app.use("/admin", adminRouter);
 app.use("/auth", authRouter);
 app.use("/student", studentRouter);
 import timeRouter from "./routes/time.route";
@@ -18,5 +20,3 @@ app.use("/time", timeRouter);
 
 init(app);
 
-import adminRouter from "./routes/admin.route";
-app.use("/admin", adminRouter);
