@@ -1,23 +1,103 @@
 <script setup>
 import { ref } from "@vue/reactivity";
+import { createToast } from "mosha-vue-toastify";
+import { computed, getCurrentInstance } from "vue";
+import { useStore } from "vuex";
+import LoadingSpinner from "./Loader.vue";
 
+const { emit } = getCurrentInstance();
+const store = useStore();
 const fnameRef = ref(null);
 const lnameRef = ref(null);
 const emailRef = ref(null);
 const passRef = ref(null);
 const cpassRef = ref(null);
-const submit = () => {
+const loading = ref(false);
+const apiBase = import.meta.env.VITE_API_URL;
+const accessToken = computed(() => store.state.accessToken);
+
+// Handle submit form for adding new admin
+const submit = async () => {
   const fname = fnameRef.value.value;
   const lname = lnameRef.value.value;
   const email = emailRef.value.value;
   const pass = passRef.value.value;
   const cpass = cpassRef.value.value;
-  console.log({ fname, lname, email, pass, cpass });
+  if (!validateEmptyInputs(fname, lname, email, pass, cpass)) return;
+  if (!validateEmail(email)) return;
+  if (!validatePasswords(pass, cpass)) return;
+
+  const body = JSON.stringify({
+    firstname: fname,
+    lastname: lname,
+    email,
+    password: pass,
+  });
+
+  loading.value = true;
+  try {
+    const res = await fetch(`${apiBase}/admin`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": accessToken,
+      },
+      body,
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      loading.value = false;
+      createToast(data.err, { type: "danger" });
+      return;
+    }
+  } catch (error) {
+    loading.value = false;
+    createToast("Something went wrong", { type: "danger" });
+    return;
+  }
+
+  loading.value = false;
+  createToast("New Admin Successfully Added", { type: "success" });
+  emit("closeModal");
+};
+
+const validateEmptyInputs = (...inputs) => {
+  for (let i = 0; i < inputs.length; i++) {
+    if (inputs[i].length === 0) {
+      createToast("Inputs must not be empty string", { type: "danger" });
+      return false;
+    }
+  }
+  return true;
+};
+
+const validateEmail = (email) => {
+  if (
+    !String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )
+  ) {
+    createToast("Invalid Email Format", { type: "danger" });
+    return false;
+  }
+  return true;
+};
+
+const validatePasswords = (p1, p2) => {
+  if (p1 !== p2) {
+    createToast("Passwords do not match", { type: "danger" });
+    return false;
+  }
+  return true;
 };
 </script>
 
 <template>
   <div>
+    <loading-spinner v-if="loading" />
     <div @click="$emit('closeModal')" class="overlay"></div>
     <form @submit.prevent="submit">
       <h1 class="text-red-700 text-3xl text-center font-bold my-2">
