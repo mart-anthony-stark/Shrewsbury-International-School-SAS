@@ -26,9 +26,18 @@ module.exports = {
     }),
     // CREATE DATA
     createOne: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const newAdmin = new Admin_model_1.default(req.body);
-        yield newAdmin.save();
-        res.send(newAdmin);
+        try {
+            const newAdmin = new Admin_model_1.default(req.body);
+            yield newAdmin.save();
+            res.send(newAdmin);
+        }
+        catch (error) {
+            let err = error.message;
+            if (error.code === 11000) {
+                err = "Email must be unique";
+            }
+            res.status(500).send({ err });
+        }
     }),
     // UPDATE DATA
     updateOne: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
