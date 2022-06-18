@@ -4,7 +4,7 @@ import Admin from "../models/Admin.model";
 module.exports = {
   // GET ALL DATA
   getAll: async (req: Request, res: Response) => {
-    const admins = await Admin.find();
+    const admins = await Admin.find().select('-password');
     res.send(admins);
   },
   // GET ONE DATA
@@ -19,6 +19,7 @@ module.exports = {
       await newAdmin.save();
       res.send(newAdmin);
     } catch (error: any) {
+      console.log(error.message)
       let err = error.message;
       if (error.code === 11000) {
         err = "Email must be unique";

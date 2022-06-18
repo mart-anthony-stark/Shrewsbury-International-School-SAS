@@ -16,7 +16,7 @@ const Admin_model_1 = __importDefault(require("../models/Admin.model"));
 module.exports = {
     // GET ALL DATA
     getAll: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const admins = yield Admin_model_1.default.find();
+        const admins = yield Admin_model_1.default.find().select('-password');
         res.send(admins);
     }),
     // GET ONE DATA
