@@ -1,5 +1,12 @@
 <script setup>
-import { defineAsyncComponent, onBeforeMount, ref } from "@vue/runtime-core";
+import {
+  computed,
+  defineAsyncComponent,
+  onBeforeMount,
+  ref,
+} from "@vue/runtime-core";
+import { createToast } from "mosha-vue-toastify";
+import { useStore } from "vuex";
 
 const Header = defineAsyncComponent(() => import("../components/Header.vue"));
 const AddModal = defineAsyncComponent(() =>
@@ -8,7 +15,8 @@ const AddModal = defineAsyncComponent(() =>
 const DeleteModal = defineAsyncComponent(() =>
   import("../components/DeleteModal.vue")
 );
-
+const store = useStore();
+const accessToken = computed(() => store.state.accessToken);
 const isAddmodalActive = ref(false);
 const isDelModalActive = ref(false);
 const currentDeleteID = ref("");
@@ -30,7 +38,23 @@ const initDelete = (id) => {
   isDelModalActive.value = true;
 };
 const deleteRecord = async () => {
-  console.log(currentDeleteID.value);
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/admin/${currentDeleteID.value}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "access-token": accessToken,
+      },
+    }
+  );
+  if (!res.ok) {
+    createToast("Something went wrong!", { type: "danger" });
+  } else {
+    createToast("Successfully deleted record", { type: "success" });
+    fetchAdmins();
+  }
+  cancelDelete();
 };
 const cancelDelete = () => {
   currentDeleteID.value = null;
@@ -88,6 +112,9 @@ onBeforeMount(() => fetchAdmins());
           </tbody>
         </table>
       </div>
+      <h2 v-if="admins.length === 0" class="text-center text-3xl text-gray-600">
+        There are no records to display
+      </h2>
     </main>
   </div>
 </template>
