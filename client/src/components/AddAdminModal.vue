@@ -14,15 +14,17 @@ const submit = () => {
 <template>
   <div>
     <div @click="$emit('closeModal')" class="overlay"></div>
-    <form @submit.prevent="submit()">
-      <h1 class="text-red-700 text-3xl text-center font-bold my-2">Admin</h1>
+    <form @submit.prevent="submit">
+      <h1 class="text-red-700 text-3xl text-center font-bold my-2">
+        New Admin
+      </h1>
       <input ref="fnameRef" type="text" placeholder="Firstname" />
       <input ref="lnameRef" type="text" placeholder="Lastname" />
       <input ref="emailRef" type="text" placeholder="Email" />
       <input ref="passRef" type="password" placeholder="Password" />
       <input ref="cpassRef" type="password" placeholder="Confirm Password" />
       <button
-        @click="login()"
+        type="submit"
         class="
           bg-blue-500
           hover:bg-blue-700
@@ -34,7 +36,6 @@ const submit = () => {
           focus:outline-none focus:shadow-outline
           w-full
         "
-        type="button"
       >
         Add New Admin
       </button>
