@@ -7,7 +7,12 @@ const emailRef = ref(null);
 const passRef = ref(null);
 const cpassRef = ref(null);
 const submit = () => {
-  console.log("Submit");
+  const fname = fnameRef.value.value;
+  const lname = lnameRef.value.value;
+  const email = emailRef.value.value;
+  const pass = passRef.value.value;
+  const cpass = cpassRef.value.value;
+  console.log({ fname, lname, email, pass, cpass });
 };
 </script>
 
