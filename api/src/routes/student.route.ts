@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/", catcher(studentController.getAll));
 router.get("/:id", catcher(studentController.getOne));
-router.post("/", catcher(studentController.createOne));
+router.post("/", studentController.createOne);
 router.put("/:id", catcher(studentController.updateOne));
 router.delete("/:id", catcher(studentController.deleteOne));
 
