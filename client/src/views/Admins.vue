@@ -81,6 +81,7 @@ onBeforeMount(() => fetchAdmins());
     <transition name="fade">
       <add-modal @closeModal="closeModal()" v-if="isAddmodalActive" />
     </transition>
+
     <transition name="fade">
       <edit-modal
         @closeModal="closeEditModal()"
@@ -88,6 +89,7 @@ onBeforeMount(() => fetchAdmins());
         :editObj="editObj"
       />
     </transition>
+
     <transition name="fade">
       <delete-modal
         @cancel="cancelDelete()"
@@ -98,6 +100,7 @@ onBeforeMount(() => fetchAdmins());
     </transition>
 
     <Header />
+    
     <main class="mx-2 sm:mx-6 md:mx-12">
       <h1 class="text-center text-3xl font-bold text-red-700 my-4">Admins</h1>
       <button
