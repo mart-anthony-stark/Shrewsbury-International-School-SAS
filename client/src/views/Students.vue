@@ -15,9 +15,9 @@ const AddModal = defineAsyncComponent(() =>
 const DeleteModal = defineAsyncComponent(() =>
   import("../components/DeleteModal.vue")
 );
-// const EditModal = defineAsyncComponent(() =>
-//   import("../components/EditStudentModal.vue")
-// );
+const EditModal = defineAsyncComponent(() =>
+  import("../components/EditStudentModal.vue")
+);
 const store = useStore();
 const accessToken = computed(() => store.state.accessToken);
 const records = ref([]);
@@ -34,6 +34,11 @@ const fetchRecords = async () => {
 const closeAddModal = () => {
   isAddmodalActive.value = false;
   fetchRecords();
+};
+
+const closeEditModal = () => {
+  fetchRecords();
+  editObj.value = null;
 };
 
 const deleteRecord = async () => {
@@ -63,6 +68,14 @@ onBeforeMount(() => fetchRecords());
   <div>
     <transition name="fade">
       <add-modal @closeModal="closeAddModal()" v-if="isAddmodalActive" />
+    </transition>
+
+    <transition name="fade">
+      <edit-modal
+        @closeModal="closeEditModal()"
+        v-if="editObj !== null"
+        :editObj="editObj"
+      />
     </transition>
 
     <transition name="fade">
@@ -101,7 +114,7 @@ onBeforeMount(() => fetchRecords());
               <td>{{ student.course }}</td>
               <td>{{ student.section }}</td>
               <td class="grid grid-cols-2 gap-2">
-                <button class="edit-btn">
+                <button @click="editObj = student" class="edit-btn">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
                 </button>
                 <button @click="delID = student._id" class="del-btn">
