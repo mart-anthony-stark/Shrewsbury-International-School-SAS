@@ -57,7 +57,7 @@ const submit = async () => {
   }
 
   loading.value = false;
-  createToast("New Admin Successfully Added", { type: "success" });
+  createToast("New Student Successfully Added", { type: "success" });
   emit("closeModal");
 };
 
