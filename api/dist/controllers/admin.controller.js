@@ -13,10 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Admin_model_1 = __importDefault(require("../models/Admin.model"));
+const bcrypt = require("bcryptjs");
 module.exports = {
     // GET ALL DATA
     getAll: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const admins = yield Admin_model_1.default.find().select('-password');
+        const admins = yield Admin_model_1.default.find().select("-password");
         res.send(admins);
     }),
     // GET ONE DATA
@@ -32,6 +33,7 @@ module.exports = {
             res.send(newAdmin);
         }
         catch (error) {
+            console.log(error.message);
             let err = error.message;
             if (error.code === 11000) {
                 err = "Email must be unique";
@@ -41,6 +43,10 @@ module.exports = {
     }),
     // UPDATE DATA
     updateOne: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        if (req["body"]["password"]) {
+            const salt = yield bcrypt.genSalt(10);
+            req["body"]["password"] = yield bcrypt.hash(req.body.password, salt);
+        }
         const admin = yield Admin_model_1.default.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }, { new: true });
         res.send(admin);
     }),

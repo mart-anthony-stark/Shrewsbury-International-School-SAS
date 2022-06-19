@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import Admin from "../models/Admin.model";
+const bcrypt = require("bcryptjs");
 
 module.exports = {
   // GET ALL DATA
   getAll: async (req: Request, res: Response) => {
-    const admins = await Admin.find().select('-password');
+    const admins = await Admin.find().select("-password");
     res.send(admins);
   },
   // GET ONE DATA
@@ -19,7 +20,7 @@ module.exports = {
       await newAdmin.save();
       res.send(newAdmin);
     } catch (error: any) {
-      console.log(error.message)
+      console.log(error.message);
       let err = error.message;
       if (error.code === 11000) {
         err = "Email must be unique";
@@ -29,6 +30,16 @@ module.exports = {
   },
   // UPDATE DATA
   updateOne: async (req: Request, res: Response) => {
+    if (req["body"]["password"]) {
+      if (req.body.password.length < 8)
+        return res
+          .status(500)
+          .send({ msg: "Password must be at least 8 characters long" });
+
+      const salt = await bcrypt.genSalt(10);
+      req["body"]["password"] = await bcrypt.hash(req.body.password, salt);
+    }
+
     const admin = await Admin.findOneAndUpdate(
       { _id: req.params.id },
       { $set: req.body },
