@@ -15,10 +15,15 @@ const AddModal = defineAsyncComponent(() =>
 const DeleteModal = defineAsyncComponent(() =>
   import("../components/DeleteModal.vue")
 );
+const EditModal = defineAsyncComponent(() =>
+  import("../components/EditAdminModal.vue")
+);
+
 const store = useStore();
 const accessToken = computed(() => store.state.accessToken);
 const isAddmodalActive = ref(false);
 const isDelModalActive = ref(false);
+const editObj = ref(null);
 const currentDeleteID = ref("");
 const admins = ref([]);
 
@@ -37,6 +42,7 @@ const initDelete = (id) => {
   currentDeleteID.value = id;
   isDelModalActive.value = true;
 };
+
 const deleteRecord = async () => {
   const res = await fetch(
     `${import.meta.env.VITE_API_URL}/admin/${currentDeleteID.value}`,
@@ -70,6 +76,13 @@ onBeforeMount(() => fetchAdmins());
       <add-modal @closeModal="closeModal()" v-if="isAddmodalActive" />
     </transition>
     <transition name="fade">
+      <edit-modal
+        @closeModal="editObj = null"
+        v-if="editObj !== null"
+        :editObj="editObj"
+      />
+    </transition>
+    <transition name="fade">
       <delete-modal
         @cancel="cancelDelete()"
         @confirm="deleteRecord()"
@@ -101,7 +114,7 @@ onBeforeMount(() => fetchAdmins());
               <td>{{ admin["lastname"] }}</td>
               <td>{{ admin["email"] }}</td>
               <td class="grid grid-cols-2 gap-2">
-                <button class="edit-btn">
+                <button @click="editObj = admin" class="edit-btn">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
                 </button>
                 <button @click="initDelete(admin._id)" class="del-btn">
