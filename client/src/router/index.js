@@ -21,6 +21,11 @@ const routes = [
     name: "AdminLogin",
     component: () => import("../views/Login.vue"),
   },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "PageNotFound",
+    component: () => import("../views/404.vue"),
+  },
 ];
 
 const router = createRouter({
