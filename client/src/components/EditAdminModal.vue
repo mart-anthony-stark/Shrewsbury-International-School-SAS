@@ -24,16 +24,17 @@ const submit = async () => {
   const email = emailRef.value.value;
   const pass = passRef.value.value;
   const cpass = cpassRef.value.value;
-  if (!validateEmptyInputs(fname, lname, email, pass, cpass)) return;
+  if (!validateEmptyInputs(fname, lname, email)) return;
   if (!validateEmail(email)) return;
-  if (!validatePasswords(pass, cpass)) return;
+  if (pass.length !== 0 && !validatePasswords(pass, cpass)) return;
 
-  const body = JSON.stringify({
+  const body = {
     firstname: fname,
     lastname: lname,
     email,
-    password: pass,
-  });
+  };
+
+  if (pass.length !== 0) body["password"] = pass;
 
   loading.value = true;
   try {
@@ -43,7 +44,7 @@ const submit = async () => {
         "Content-Type": "application/json",
         "access-token": accessToken,
       },
-      body,
+      body: JSON.stringify(body),
     });
 
     const data = await res.json();
