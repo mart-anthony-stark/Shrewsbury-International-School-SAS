@@ -1,7 +1,17 @@
 <script setup>
-import { defineAsyncComponent } from "@vue/runtime-core";
+import { defineAsyncComponent, onBeforeMount, ref } from "@vue/runtime-core";
 
 const Header = defineAsyncComponent(() => import("../components/Header.vue"));
+
+const records = ref([]);
+
+const fetchRecords = async () => {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/student`);
+  const data = await res.json();
+  records.value = data;
+};
+
+onBeforeMount(() => fetchRecords());
 </script>
 
 <template>
@@ -16,15 +26,20 @@ const Header = defineAsyncComponent(() => import("../components/Header.vue"));
         <table>
           <thead>
             <th>Firstname</th>
+            <th>Middlename</th>
             <th>Lastname</th>
-            <th>Email</th>
+            <th>Course</th>
+            <th>Section</th>
             <th>Action</th>
           </thead>
           <tbody>
-            <tr>
-              <td>Mart Anthony</td>
-              <td>Salazar</td>
-              <td>mart@gmail.com</td>
+            <tr v-for="student in records" :key="student._id">
+              <td>{{ student.firstname }}</td>
+              <td>{{ student.middlename }}</td>
+              <td>{{ student.lastname }}</td>
+              <td>{{ student.email }}</td>
+              <td>{{ student.course }}</td>
+              <td>{{ student.section }}</td>
               <td class="grid grid-cols-2 gap-2">
                 <button class="edit-btn">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
@@ -37,6 +52,12 @@ const Header = defineAsyncComponent(() => import("../components/Header.vue"));
           </tbody>
         </table>
       </div>
+      <h2
+        v-if="records.length === 0"
+        class="text-center text-3xl text-gray-600"
+      >
+        There are no records to display
+      </h2>
     </main>
   </div>
 </template>

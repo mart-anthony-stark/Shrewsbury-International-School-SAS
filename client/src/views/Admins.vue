@@ -33,6 +33,7 @@ const fetchAdmins = async () => {
   admins.value = data;
 };
 
+//Handle Close add modal
 const closeModal = () => {
   fetchAdmins();
   isAddmodalActive.value = false;
@@ -41,6 +42,11 @@ const closeModal = () => {
 const initDelete = (id) => {
   currentDeleteID.value = id;
   isDelModalActive.value = true;
+};
+
+const closeEditModal = () => {
+  fetchAdmins();
+  editObj.value = null;
 };
 
 const deleteRecord = async () => {
@@ -77,7 +83,7 @@ onBeforeMount(() => fetchAdmins());
     </transition>
     <transition name="fade">
       <edit-modal
-        @closeModal="editObj = null"
+        @closeModal="closeEditModal()"
         v-if="editObj !== null"
         :editObj="editObj"
       />
