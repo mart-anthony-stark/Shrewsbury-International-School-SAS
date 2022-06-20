@@ -88,13 +88,13 @@ onBeforeMount(() => fetchRecords());
             <tr v-for="student in records" :key="student._id">
               <td>
                 {{
-                  `${student.lastname}, ${
-                    student.firstname
-                  } ${student.middlename[0].toUpperCase()}.`
+                  `${student.student?.lastname}, ${
+                    student.student?.firstname
+                  } ${student.student?.middlename[0].toUpperCase()}.`
                 }}
               </td>
-              <td>{{ student.course }}</td>
-              <td>{{ student.section }}</td>
+              <td>{{ student.student?.course }}</td>
+              <td>{{ student.student?.section }}</td>
               <td>{{ student.time }}</td>
               <td>{{ student.date }}</td>
               <td>
