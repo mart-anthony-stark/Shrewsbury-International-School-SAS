@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Student from "../models/student.model";
+import Time from "../models/time.model";
 
 module.exports = {
   // GET ALL DATA
@@ -32,5 +33,12 @@ module.exports = {
   deleteOne: async (req: Request, res: Response) => {
     const student = await Student.findByIdAndRemove(req.params.id);
     res.send(student);
+    deleteTime(student._id);
   },
+};
+
+const deleteTime = async (_id: string) => {
+  Time.deleteMany({ student: _id }).then(() => {
+    console.log("deleted");
+  });
 };
