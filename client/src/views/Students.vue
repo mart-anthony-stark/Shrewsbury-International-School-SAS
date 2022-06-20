@@ -99,6 +99,7 @@ onBeforeMount(() => fetchRecords());
       <div class="center hidden">
         <table>
           <thead>
+            <th>UID</th>
             <th>Firstname</th>
             <th>Middlename</th>
             <th>Lastname</th>
@@ -108,6 +109,7 @@ onBeforeMount(() => fetchRecords());
           </thead>
           <tbody>
             <tr v-for="student in records" :key="student._id">
+              <td>{{ student._id }}</td>
               <td>{{ student.firstname }}</td>
               <td>{{ student.middlename }}</td>
               <td>{{ student.lastname }}</td>
