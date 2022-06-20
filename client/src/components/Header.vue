@@ -10,8 +10,8 @@ const route = useRoute();
     <div class="flex gap-4 items-center">
       <img
         id="cnsc-logo"
-        class="w-14 h-14"
-        src="../assets/cnsc.png"
+        class="w-10 h-14"
+        src="../assets/school.png"
         alt="CNSC"
       />
 
