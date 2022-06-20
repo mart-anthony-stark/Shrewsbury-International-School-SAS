@@ -16,12 +16,18 @@ const route = useRoute();
       />
 
       <router-link to="/">
-        <button :class="{ active: route.name === 'Home' }">Home</button>
+        <button :class="{ active: route.name === 'home' }">Home</button>
       </router-link>
 
       <accounts-dropdown
-        :isActive="route.name == 'Students' || route.name == 'Admins'"
+        :isActive="route.name == 'students' || route.name == 'admins'"
       />
+
+      <router-link to="/attendance">
+        <button :class="{ active: route.name === 'attendance' }">
+          Attendance
+        </button>
+      </router-link>
     </div>
   </nav>
 </template>
