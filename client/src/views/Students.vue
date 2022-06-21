@@ -26,6 +26,7 @@ const records = ref([]);
 const isAddmodalActive = ref(false);
 const delID = ref(null);
 const editObj = ref(null);
+const qrValue = ref(null);
 
 const fetchRecords = async () => {
   const res = await fetch(`${import.meta.env.VITE_API_URL}/student`);
@@ -68,7 +69,10 @@ onBeforeMount(() => fetchRecords());
 
 <template>
   <div>
-    <qr-modal value="Mart Anthony" />
+    <transition name="fade">
+      <qr-modal :value="qrValue" v-if="qrValue != null" />
+    </transition>
+
     <transition name="fade">
       <add-modal @closeModal="closeAddModal()" v-if="isAddmodalActive" />
     </transition>
@@ -119,7 +123,7 @@ onBeforeMount(() => fetchRecords());
               <td>{{ student.course }}</td>
               <td>{{ student.section }}</td>
               <td class="grid grid-cols-3 gap-2">
-                <button class="bg-blue-600 rounded text-white">
+                <button @click="qrValue = student" class="bg-blue-600 rounded text-white">
                   <i class="fa fa-qrcode" aria-hidden="true"></i>
                   QR
                 </button>
