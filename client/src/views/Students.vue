@@ -70,7 +70,11 @@ onBeforeMount(() => fetchRecords());
 <template>
   <div>
     <transition name="fade">
-      <qr-modal :value="qrValue" v-if="qrValue != null" />
+      <qr-modal
+        @onClose="qrValue = null"
+        :value="qrValue"
+        v-if="qrValue != null"
+      />
     </transition>
 
     <transition name="fade">
@@ -123,7 +127,10 @@ onBeforeMount(() => fetchRecords());
               <td>{{ student.course }}</td>
               <td>{{ student.section }}</td>
               <td class="grid grid-cols-3 gap-2">
-                <button @click="qrValue = student" class="bg-blue-600 rounded text-white">
+                <button
+                  @click="qrValue = student"
+                  class="bg-blue-600 rounded text-white"
+                >
                   <i class="fa fa-qrcode" aria-hidden="true"></i>
                   QR
                 </button>
