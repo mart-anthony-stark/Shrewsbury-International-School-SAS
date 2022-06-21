@@ -37,7 +37,7 @@ const login = async () => {
     createToast("Successfully logged in!", { type: "success" });
     isLoading.value = false;
     localStorage.setItem("refresh-token", data["refreshToken"]);
-    router.push("/");
+    router.push("/home");
   } catch (error) {
     createToast("Something went wrong", { type: "danger" });
     isLoading.value = false;
@@ -50,7 +50,11 @@ const login = async () => {
     <loading-spinner v-if="isLoading" />
     <div class="w-full max-w-xs">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <img class="w-28 m-auto" src="../assets/school.png" alt="Shrewsbury International School" />
+        <img
+          class="w-28 m-auto"
+          src="../assets/school.png"
+          alt="Shrewsbury International School"
+        />
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
             Email
