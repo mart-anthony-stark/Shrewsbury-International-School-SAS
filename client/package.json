@@ -10,6 +10,7 @@
   "dependencies": {
     "autoprefixer": "^9.8.8",
     "dom-to-image-more": "^2.10.1",
+    "html-to-image": "^1.9.0",
     "install": "^0.13.0",
     "mosha-vue-toastify": "^1.0.23",
     "postcss": "^7.0.39",
