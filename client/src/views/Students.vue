@@ -18,6 +18,8 @@ const DeleteModal = defineAsyncComponent(() =>
 const EditModal = defineAsyncComponent(() =>
   import("../components/EditStudentModal.vue")
 );
+const QrModal = defineAsyncComponent(() => import("../components/QrCode.vue"));
+
 const store = useStore();
 const accessToken = computed(() => store.state.accessToken);
 const records = ref([]);
@@ -66,6 +68,7 @@ onBeforeMount(() => fetchRecords());
 
 <template>
   <div>
+    <qr-modal value="Mart Anthony" />
     <transition name="fade">
       <add-modal @closeModal="closeAddModal()" v-if="isAddmodalActive" />
     </transition>
@@ -115,7 +118,11 @@ onBeforeMount(() => fetchRecords());
               <td>{{ student.lastname }}</td>
               <td>{{ student.course }}</td>
               <td>{{ student.section }}</td>
-              <td class="grid grid-cols-2 gap-2">
+              <td class="grid grid-cols-3 gap-2">
+                <button class="bg-blue-600 rounded text-white">
+                  <i class="fa fa-qrcode" aria-hidden="true"></i>
+                  QR
+                </button>
                 <button @click="editObj = student" class="edit-btn">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
                 </button>
