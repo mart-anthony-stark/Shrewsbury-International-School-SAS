@@ -1,13 +1,28 @@
 <script setup>
 import QrcodeVue from "qrcode.vue";
+import domtoimage from "dom-to-image-more";
+// import { handleDownload } from "../utils/index.js";
 
 const { value } = defineProps(["value"]);
+
+const handleDownload = () => {
+  // domtoimage
+  //   .toJpeg(document.getElementById("capture"), { quality: 0.95 })
+  //   .then(function (dataUrl) {
+  //     var link = document.createElement("a");
+  //     link.download = "my-image-name.jpeg";
+  //     link.href = dataUrl;
+  //     link.click();
+  //   });
+  print();
+};
+const print = () => window.print();
 </script>
 
 <template>
   <div class="container">
     <div @click="$emit('onClose')" class="overlay"></div>
-    <div class="qr-container">
+    <div id="capture" class="qr-container">
       <qrcode-vue :value="value._id" :size="280"></qrcode-vue>
       <h2 class="text-center font-bold text-red-800">
         {{ value.lastname }}, {{ value.firstname }}
@@ -21,6 +36,10 @@ const { value } = defineProps(["value"]);
         src="../assets/school.png"
         alt="Shrewsbury International School"
       />
+    </div>
+    <div class="download-btn grid grid-cols-2 gap-2">
+      <button @click="handleDownload()">Download</button>
+      <button @click="print()">print</button>
     </div>
   </div>
 </template>
@@ -37,5 +56,21 @@ const { value } = defineProps(["value"]);
 #logo {
   height: 50px;
   margin: auto;
+}
+.download-btn {
+  @apply fixed z-30 bottom-6;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.download-btn button {
+  @apply bg-red-800 hover:bg-red-700  px-4 py-2  text-white rounded;
+}
+@page {
+  margin: 0;
+}
+@media print {
+  .download-btn {
+    display: none;
+  }
 }
 </style>
