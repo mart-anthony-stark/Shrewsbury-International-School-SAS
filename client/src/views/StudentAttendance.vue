@@ -59,8 +59,14 @@ const onDecode = (data) => {
   <div class="main-container center min-h-screen">
     <loading-spinner v-if="isLoading" />
 
-    <div class="fixed mx-4" v-if="scanQR">
+    <div class="fixed mx-4 border-2 border-gray-800" v-if="scanQR">
       <qr-stream @decode="onDecode" />
+      <button
+        @click="scanQR = false"
+        class="absolute -top-6 bg-red-800 -right-6 text-white px-4 py-2 rounded"
+      >
+        X
+      </button>
     </div>
     <!-- <qr-capture /> -->
 
