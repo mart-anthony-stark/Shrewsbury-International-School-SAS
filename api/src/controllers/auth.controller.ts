@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 
 import User from "../models/Admin.model";
-import { createToken } from "../utils/token";
+import {
+  createAccessToken,
+  createRefreshToken,
+  createToken,
+} from "../utils/token";
 const bcrypt = require("bcryptjs");
 
 export default {
@@ -13,12 +17,9 @@ export default {
       user.password = await bcrypt.hash(req.body.password, salt);
 
       await user.save();
-      const accessToken = createToken(user, `${process.env.ACCESS_SECRET}`,"30m");
-      const refreshToken = createToken(
-        user._id,
-        `${process.env.REFRESH_SECRET}`,
-        '7d'
-      );
+      const accessToken = createAccessToken(user);
+      const refreshToken = createRefreshToken(user._id);
+
       user._doc.password = undefined;
       res.status(200).send({
         user: user._doc,
@@ -30,7 +31,7 @@ export default {
       if (error.code === 11000) {
         err = "Email must be unique";
       }
-      res.status(500).send({err});
+      res.status(500).send({ err });
     }
   },
   login: async (req: Request, res: Response) => {
@@ -46,12 +47,8 @@ export default {
       if (!validPassword)
         return res.status(401).send({ msg: "Incorrect password" });
 
-      const accessToken = createToken(user, `${process.env.ACCESS_SECRET}`,'30m');
-      const refreshToken = createToken(
-        user._id,
-        `${process.env.REFRESH_SECRET}`,
-        '7d'
-      );
+      const accessToken = createAccessToken(user);
+      const refreshToken = createRefreshToken(user._id);
       user._doc.password = undefined;
       res
         .status(200)
