@@ -4,6 +4,7 @@ import { computed } from "@vue/runtime-core";
 import { createToast } from "mosha-vue-toastify";
 import { useStore } from "vuex";
 import LoadingSpinner from "../components/Loader.vue";
+import { QrStream, QrCapture, QrDropzone } from "vue3-qr-reader";
 
 const store = useStore();
 const accessToken = computed(() => store.state.accessToken);
@@ -46,8 +47,8 @@ const timeIn = async () => {
   codeRef.value.value = "";
 };
 
-const onDecode = (decodedString) => {
-  console.log(decodedString);
+const onDecode = (data) => {
+  console.log(data);
 };
 </script>
 
@@ -55,6 +56,8 @@ const onDecode = (decodedString) => {
 <template>
   <div class="main-container center min-h-screen">
     <loading-spinner v-if="isLoading" />
+    <qr-stream @decode="onDecode" />
+    <!-- <qr-capture /> -->
 
     <main class="flex flex-col w-full gap-2 bg-white p-4 rounded">
       <h1 class="text-center font-bold text-2xl text-red-700">
