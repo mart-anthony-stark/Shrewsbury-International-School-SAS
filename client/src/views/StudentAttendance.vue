@@ -11,9 +11,10 @@ const accessToken = computed(() => store.state.accessToken);
 const APIBASE = import.meta.env.VITE_API_URL;
 const codeRef = ref(null);
 const isLoading = ref(false);
+const scanQR = ref(false);
 
-const timeIn = async () => {
-  const code = codeRef.value.value;
+const timeIn = async (data) => {
+  const code = data ? data : codeRef.value.value;
   if (code.length === 0) {
     createToast("Please input your student code", { type: "danger" });
     return;
@@ -43,12 +44,13 @@ const timeIn = async () => {
     return;
   }
   isLoading.value = false;
+  scanQR.value = false;
   createToast(`Time in: ${time} - ${date}`, { type: "success" });
   codeRef.value.value = "";
 };
 
 const onDecode = (data) => {
-  console.log(data);
+  timeIn(data);
 };
 </script>
 
@@ -56,7 +58,10 @@ const onDecode = (data) => {
 <template>
   <div class="main-container center min-h-screen">
     <loading-spinner v-if="isLoading" />
-    <qr-stream @decode="onDecode" />
+
+    <div class="fixed mx-4" v-if="scanQR">
+      <qr-stream @decode="onDecode" />
+    </div>
     <!-- <qr-capture /> -->
 
     <main class="flex flex-col w-full gap-2 bg-white p-4 rounded">
@@ -76,6 +81,7 @@ const onDecode = (data) => {
         TIME IN
       </button>
       <button
+        @click="scanQR = true"
         class="px-4 py-2 bg-blue-800 text-white rounded hover:bg-blue-700"
       >
         Scan QR code
