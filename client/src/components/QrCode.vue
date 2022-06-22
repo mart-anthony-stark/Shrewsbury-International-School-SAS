@@ -52,7 +52,7 @@ const print = () => window.print();
     </div>
     <div class="download-btn grid grid-cols-2 gap-2">
       <button @click="handleDownload()">Download</button>
-      <button @click="print()">print</button>
+      <button @click="print()">Print</button>
     </div>
   </div>
 </template>
