@@ -45,12 +45,17 @@ const timeIn = async () => {
   createToast(`Time in: ${time} - ${date}`, { type: "success" });
   codeRef.value.value = "";
 };
+
+const onDecode = (decodedString) => {
+  console.log(decodedString);
+};
 </script>
 
 
 <template>
   <div class="main-container center min-h-screen">
     <loading-spinner v-if="isLoading" />
+
     <main class="flex flex-col w-full gap-2 bg-white p-4 rounded">
       <h1 class="text-center font-bold text-2xl text-red-700">
         Student Attendance
