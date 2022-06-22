@@ -12,6 +12,18 @@ export const createToken = (
   });
 };
 
+export const createAccessToken = (body: any) => {
+  return jwt.sign({ body }, `${process.env.ACCESS_SECRET}`, {
+    expiresIn: "30m",
+  });
+};
+
+export const createRefreshToken = (body: any) => {
+  return jwt.sign({ body }, `${process.env.REFRESH_SECRET}`, {
+    expiresIn: "7d",
+  });
+};
+
 export const verifyToken = (
   req: IGetUserAuthInfoRequest,
   res: Response,
